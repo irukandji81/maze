@@ -69,6 +69,12 @@ class Window:
     def clear_canvas(self):
         self.__canvas.delete("all")
 
+    def disable_solve_button(self):
+        self.__solve_button.config(state="disabled")
+
+    def enable_solve_button(self):
+        self.__solve_button.config(state="normal")
+
 class Point:
     def __init__(self, x, y):
         self.x = x
