@@ -17,6 +17,10 @@ class Window:
         self.__clear_button = Button(self.__root, text="Clear Path", command=self.clear_path)
         self.__clear_button.pack()
 
+        # Add a New Maze button
+        self.__new_maze_button = Button(self.__root, text="New Maze", command=self.new_maze)
+        self.__new_maze_button.pack()
+
     def redraw(self):
         self.__root.update_idletasks()
         self.__root.update()
@@ -41,11 +45,18 @@ class Window:
         if self.clear_callback:
             self.clear_callback()
 
+    def new_maze(self):
+        if self.new_maze_callback:
+            self.new_maze_callback()
+
     def set_solve_callback(self, callback):
         self.solve_callback = callback
 
     def set_clear_callback(self, callback):
         self.clear_callback = callback
+
+    def set_new_maze_callback(self, callback):
+        self.new_maze_callback = callback
     
     def clear_canvas(self):
         self.__canvas.delete("all")

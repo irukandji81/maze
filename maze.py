@@ -155,3 +155,18 @@ class Maze:
             self._cells[i][j].draw_move(self._cells[ni][nj])
 
         self._win.redraw()  # Ensure the redraw happens immediately
+    
+    def new_maze(self):
+        # Clear the canvas
+        self._win.clear_canvas()
+
+        # Reset the cells and solution path
+        self._cells = []
+        self.solution_path = []
+
+        # Create a new maze
+        self._create_cells()
+        self._break_entrance_and_exit()
+        self._break_walls_r(0, 0)
+        self._reset_cells_visited()
+        self._win.redraw()
