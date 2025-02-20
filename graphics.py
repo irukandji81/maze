@@ -35,9 +35,11 @@ class Window:
         self.__root.bind("<Right>", self.move_right)
 
         self.__victory_label = None
+        self.__victory_box = None
 
     def show_victory_message(self):
         if self.__victory_label is None:
+            # Create the victory text first to get its dimensions
             self.__victory_label = self.__canvas.create_text(
                 self.__canvas.winfo_width() // 2,
                 self.__canvas.winfo_height() // 2,
@@ -45,6 +47,20 @@ class Window:
                 fill="yellow",
                 font=("Helvetica", 24, "bold")
             )
+            bbox = self.__canvas.bbox(self.__victory_label)  # Get bounding box of the text
+
+            # Create a text box background based on the text dimensions
+            self.__victory_box = self.__canvas.create_rectangle(
+                bbox[0] - 20,  # Add some padding
+                bbox[1] - 10,
+                bbox[2] + 20,
+                bbox[3] + 10,
+                fill="#333333",  # Dark grey background
+                outline="white",  # White border
+                width=3
+            )
+            # Raise the text above the box
+            self.__canvas.tag_raise(self.__victory_label)
         self.redraw()
     
     def move_up(self, event):
@@ -69,6 +85,9 @@ class Window:
     def redraw(self):
         self.__root.update_idletasks()
         self.__root.update()
+        if self.__victory_box is not None and self.__victory_label is not None:
+            self.__canvas.tag_raise(self.__victory_box)
+            self.__canvas.tag_raise(self.__victory_label)
 
     def wait_for_close(self):
         self.__running = True
