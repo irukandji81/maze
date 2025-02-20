@@ -1,5 +1,4 @@
-from tkinter import Tk, BOTH, Canvas
-
+from tkinter import Tk, BOTH, Canvas, Button
 
 class Window:
     def __init__(self, width, height):
@@ -9,6 +8,10 @@ class Window:
         self.__canvas = Canvas(self.__root, bg="white", height=height, width=width)
         self.__canvas.pack(fill=BOTH, expand=1)
         self.__running = False
+
+        # Add a Solve button
+        self.__solve_button = Button(self.__root, text="Solve", command=self.solve)
+        self.__solve_button.pack()
 
     def redraw(self):
         self.__root.update_idletasks()
@@ -26,23 +29,22 @@ class Window:
     def close(self):
         self.__running = False
 
+    def solve(self):
+        if self.solve_callback:
+            self.solve_callback()
+
+    def set_solve_callback(self, callback):
+        self.solve_callback = callback
 
 class Point:
     def __init__(self, x, y):
         self.x = x
         self.y = y
 
-
 class Line:
-    def __init__(
-        self,
-        p1,
-        p2,
-    ):
+    def __init__(self, p1, p2):
         self.p1 = p1
         self.p2 = p2
 
     def draw(self, canvas, fill_color="black"):
-        canvas.create_line(
-            self.p1.x, self.p1.y, self.p2.x, self.p2.y, fill=fill_color, width=2
-        )
+        canvas.create_line(self.p1.x, self.p1.y, self.p2.x, self.p2.y, fill=fill_color, width=2)
