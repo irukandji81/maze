@@ -34,6 +34,19 @@ class Window:
         self.__root.bind("<Left>", self.move_left)
         self.__root.bind("<Right>", self.move_right)
 
+        self.__victory_label = None
+
+    def show_victory_message(self):
+        if self.__victory_label is None:
+            self.__victory_label = self.__canvas.create_text(
+                self.__canvas.winfo_width() // 2,
+                self.__canvas.winfo_height() // 2,
+                text="Congratulations! You solved the maze!",
+                fill="yellow",
+                font=("Helvetica", 24, "bold")
+            )
+        self.redraw()
+    
     def move_up(self, event):
         if self.move_callback:
             self.move_callback("up")

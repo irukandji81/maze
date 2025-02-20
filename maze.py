@@ -38,6 +38,11 @@ class Maze:
         self._cells[old_i][old_j].draw_move(self._cells[new_i][new_j])
         self.user_position = (new_i, new_j)
         self._animate()
+        self._check_victory(new_i, new_j)
+
+    def _check_victory(self, i, j):
+        if i == self._num_cols - 1 and j == self._num_rows - 1:
+            self._win.show_victory_message()
 
     def _create_cells(self):
         for i in range(self._num_cols):
