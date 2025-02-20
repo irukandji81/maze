@@ -28,7 +28,7 @@ class Maze:
             self._cells.append(col_cells)
         for i in range(self._num_cols):
             for j in range(self._num_rows):
-                self._draw_cell(i, j)
+                self._draw_cell(i, j, with_delay=False)  # Draw the grid instantly
 
     def _draw_cell(self, i, j, with_delay=True):
         if self._win is None:
