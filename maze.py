@@ -20,6 +20,25 @@ class Maze:
         self._break_walls_r(0, 0)
         self._reset_cells_visited()
 
+        self.user_position = (0, 0)  # Start position
+
+    def move_user(self, direction):
+        i, j = self.user_position
+        if direction == "up" and j > 0 and not self._cells[i][j].has_top_wall:
+            self._move_to(i, j - 1)
+        elif direction == "down" and j < self._num_rows - 1 and not self._cells[i][j].has_bottom_wall:
+            self._move_to(i, j + 1)
+        elif direction == "left" and i > 0 and not self._cells[i][j].has_left_wall:
+            self._move_to(i - 1, j)
+        elif direction == "right" and i < self._num_cols - 1 and not self._cells[i][j].has_right_wall:
+            self._move_to(i + 1, j)
+
+    def _move_to(self, new_i, new_j):
+        old_i, old_j = self.user_position
+        self._cells[old_i][old_j].draw_move(self._cells[new_i][new_j])
+        self.user_position = (new_i, new_j)
+        self._animate()
+
     def _create_cells(self):
         for i in range(self._num_cols):
             col_cells = []

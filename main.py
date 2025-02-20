@@ -25,6 +25,9 @@ def main():
     # Set the new maze callback
     win.set_new_maze_callback(maze.new_maze)
 
+    # Set the move callback
+    win.set_move_callback(maze.move_user)
+
     # Disable the Clear Path button initially
     win.disable_clear_button()
 

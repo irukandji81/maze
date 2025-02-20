@@ -29,6 +29,30 @@ class Window:
         self.__canvas.pack(fill=BOTH, expand=1)
         self.__running = False
 
+        self.__root.bind("<Up>", self.move_up)
+        self.__root.bind("<Down>", self.move_down)
+        self.__root.bind("<Left>", self.move_left)
+        self.__root.bind("<Right>", self.move_right)
+
+    def move_up(self, event):
+        if self.move_callback:
+            self.move_callback("up")
+
+    def move_down(self, event):
+        if self.move_callback:
+            self.move_callback("down")
+
+    def move_left(self, event):
+        if self.move_callback:
+            self.move_callback("left")
+
+    def move_right(self, event):
+        if self.move_callback:
+            self.move_callback("right")
+
+    def set_move_callback(self, callback):
+        self.move_callback = callback
+
     def redraw(self):
         self.__root.update_idletasks()
         self.__root.update()
