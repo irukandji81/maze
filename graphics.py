@@ -1,4 +1,4 @@
-from tkinter import Tk, BOTH, Canvas, Button, Frame, LEFT, TOP, X
+from tkinter import Tk, BOTH, Canvas, Button, Frame, LEFT, TOP, X, font
 
 class Window:
     def __init__(self, width, height):
@@ -7,22 +7,25 @@ class Window:
         self.__root.protocol("WM_DELETE_WINDOW", self.close)
 
         # Create a frame to hold the buttons
-        self.__button_frame = Frame(self.__root)
+        self.__button_frame = Frame(self.__root, bg="lightgray")
         self.__button_frame.pack(side=TOP, fill=X)
 
+        # Define a custom font
+        custom_font = font.Font(family="Helvetica", size=12, weight="bold")
+
         # Add a New Maze button
-        self.__new_maze_button = Button(self.__button_frame, text="New Maze", command=self.new_maze, width=20, height=2)
-        self.__new_maze_button.pack(side=LEFT, fill=X, expand=1)
+        self.__new_maze_button = Button(self.__button_frame, text="New Maze", command=self.new_maze, width=20, height=2, bg="blue", fg="white", font=custom_font, padx=10, pady=5, bd=3, relief="raised")
+        self.__new_maze_button.pack(side=LEFT, fill=X, expand=1, padx=5, pady=5)
 
         # Add a Solve button
-        self.__solve_button = Button(self.__button_frame, text="Solve", command=self.solve, width=20, height=2)
-        self.__solve_button.pack(side=LEFT, fill=X, expand=1)
+        self.__solve_button = Button(self.__button_frame, text="Solve", command=self.solve, width=20, height=2, bg="green", fg="white", font=custom_font, padx=10, pady=5, bd=3, relief="raised")
+        self.__solve_button.pack(side=LEFT, fill=X, expand=1, padx=5, pady=5)
 
         # Add a Clear Path button
-        self.__clear_button = Button(self.__button_frame, text="Clear Path", command=self.clear_path, state="disabled", width=20, height=2)
-        self.__clear_button.pack(side=LEFT, fill=X, expand=1)
+        self.__clear_button = Button(self.__button_frame, text="Clear Path", command=self.clear_path, state="disabled", width=20, height=2, bg="#4B0082", fg="white", font=custom_font, padx=10, pady=5, bd=3, relief="raised")
+        self.__clear_button.pack(side=LEFT, fill=X, expand=1, padx=5, pady=5)
 
-        self.__canvas = Canvas(self.__root, bg="white", height=height, width=width)
+        self.__canvas = Canvas(self.__root, bg="#1E1E1E", height=height, width=width)  # Set canvas background to dark grey
         self.__canvas.pack(fill=BOTH, expand=1)
         self.__running = False
 
@@ -36,7 +39,7 @@ class Window:
             self.redraw()
         print("window closed...")
 
-    def draw_line(self, line, fill_color="black"):
+    def draw_line(self, line, fill_color="white"):  # Default line color to white
         line.draw(self.__canvas, fill_color)
 
     def close(self):
