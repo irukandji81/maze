@@ -1,25 +1,30 @@
-from tkinter import Tk, BOTH, Canvas, Button
+from tkinter import Tk, BOTH, Canvas, Button, Frame, LEFT, TOP, X
 
 class Window:
     def __init__(self, width, height):
         self.__root = Tk()
         self.__root.title("Maze Solver")
         self.__root.protocol("WM_DELETE_WINDOW", self.close)
+
+        # Create a frame to hold the buttons
+        self.__button_frame = Frame(self.__root)
+        self.__button_frame.pack(side=TOP, fill=X)
+
+        # Add a New Maze button
+        self.__new_maze_button = Button(self.__button_frame, text="New Maze", command=self.new_maze, width=20, height=2)
+        self.__new_maze_button.pack(side=LEFT, fill=X, expand=1)
+
+        # Add a Solve button
+        self.__solve_button = Button(self.__button_frame, text="Solve", command=self.solve, width=20, height=2)
+        self.__solve_button.pack(side=LEFT, fill=X, expand=1)
+
+        # Add a Clear Path button
+        self.__clear_button = Button(self.__button_frame, text="Clear Path", command=self.clear_path, state="disabled", width=20, height=2)
+        self.__clear_button.pack(side=LEFT, fill=X, expand=1)
+
         self.__canvas = Canvas(self.__root, bg="white", height=height, width=width)
         self.__canvas.pack(fill=BOTH, expand=1)
         self.__running = False
-
-        # Add a Solve button
-        self.__solve_button = Button(self.__root, text="Solve", command=self.solve)
-        self.__solve_button.pack()
-
-        # Add a Clear Path button
-        self.__clear_button = Button(self.__root, text="Clear Path", command=self.clear_path, state="disabled")
-        self.__clear_button.pack()
-
-        # Add a New Maze button
-        self.__new_maze_button = Button(self.__root, text="New Maze", command=self.new_maze)
-        self.__new_maze_button.pack()
 
     def redraw(self):
         self.__root.update_idletasks()
