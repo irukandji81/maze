@@ -45,7 +45,7 @@ class Maze:
             return
         self._win.redraw()
         if with_delay:
-            time.sleep(0.025)  # Apply delay only if with_delay is True
+            time.sleep(0.015)  # Apply delay only if with_delay is True
 
     def _break_entrance_and_exit(self):
         self._cells[0][0].has_top_wall = False
