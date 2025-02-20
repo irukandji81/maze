@@ -109,8 +109,11 @@ class Maze:
                 cell.visited = False
 
     def solve(self):
-        self.solution_path = []
-        return self._solve_r(0, 0)
+        self.solution_path = []  # Initialize the solution path
+        solved = self._solve_r(0, 0)
+        if solved:
+            self._win.enable_clear_button()  # Enable the Clear Path button after solving
+        return solved
 
     def _solve_r(self, i, j):
         self._animate()
@@ -169,4 +172,5 @@ class Maze:
         self._break_entrance_and_exit()
         self._break_walls_r(0, 0)
         self._reset_cells_visited()
+        self._win.disable_clear_button()  # Disable the Clear Path button for the new maze
         self._win.redraw()

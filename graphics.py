@@ -14,7 +14,7 @@ class Window:
         self.__solve_button.pack()
 
         # Add a Clear Path button
-        self.__clear_button = Button(self.__root, text="Clear Path", command=self.clear_path)
+        self.__clear_button = Button(self.__root, text="Clear Path", command=self.clear_path, state="disabled")
         self.__clear_button.pack()
 
         # Add a New Maze button
@@ -40,6 +40,7 @@ class Window:
     def solve(self):
         if self.solve_callback:
             self.solve_callback()
+            self.enable_clear_button()  # Enable the Clear Path button after solving
 
     def clear_path(self):
         if self.clear_callback:
@@ -48,6 +49,7 @@ class Window:
     def new_maze(self):
         if self.new_maze_callback:
             self.new_maze_callback()
+            self.disable_clear_button()  # Disable the Clear Path button for the new maze
 
     def set_solve_callback(self, callback):
         self.solve_callback = callback
@@ -57,7 +59,13 @@ class Window:
 
     def set_new_maze_callback(self, callback):
         self.new_maze_callback = callback
-    
+
+    def enable_clear_button(self):
+        self.__clear_button.config(state="normal")
+
+    def disable_clear_button(self):
+        self.__clear_button.config(state="disabled")
+
     def clear_canvas(self):
         self.__canvas.delete("all")
 
