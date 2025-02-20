@@ -11,6 +11,9 @@ def main():
     cell_size_y = (screen_y - 2 * margin) / num_rows
     win = Window(screen_x, screen_y)
 
+    # Disable the Solve button initially
+    win.disable_solve_button()
+
     maze = Maze(margin, margin, num_rows, num_cols, cell_size_x, cell_size_y, win)
 
     # Set the solve callback
@@ -24,6 +27,9 @@ def main():
 
     # Disable the Clear Path button initially
     win.disable_clear_button()
+
+    # Enable the Solve button after the maze is fully drawn
+    win.enable_solve_button()
 
     win.wait_for_close()
 
