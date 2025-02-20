@@ -13,6 +13,10 @@ class Window:
         self.__solve_button = Button(self.__root, text="Solve", command=self.solve)
         self.__solve_button.pack()
 
+        # Add a Clear Path button
+        self.__clear_button = Button(self.__root, text="Clear Path", command=self.clear_path)
+        self.__clear_button.pack()
+
     def redraw(self):
         self.__root.update_idletasks()
         self.__root.update()
@@ -33,8 +37,18 @@ class Window:
         if self.solve_callback:
             self.solve_callback()
 
+    def clear_path(self):
+        if self.clear_callback:
+            self.clear_callback()
+
     def set_solve_callback(self, callback):
         self.solve_callback = callback
+
+    def set_clear_callback(self, callback):
+        self.clear_callback = callback
+    
+    def clear_canvas(self):
+        self.__canvas.delete("all")
 
 class Point:
     def __init__(self, x, y):

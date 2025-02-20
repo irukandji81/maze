@@ -16,6 +16,9 @@ def main():
     # Set the solve callback
     win.set_solve_callback(maze.solve)
 
+    # Set the clear path callback
+    win.set_clear_callback(maze.clear_path)
+
     win.wait_for_close()
 
 main()
