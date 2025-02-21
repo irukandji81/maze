@@ -139,6 +139,14 @@ class Window:
     def enable_solve_button(self):
         self.__solve_button.config(state="normal")
 
+    def fill_rectangle(self, x1, y1, x2, y2, color):
+        self.__canvas.create_rectangle(x1, y1, x2, y2, fill=color, outline=color)
+
+    def draw_text(self, x1, y1, x2, y2, text):
+        x_center = (x1 + x2) / 2
+        y_center = (y1 + y2) / 2
+        self.__canvas.create_text(x_center, y_center, text=text, fill="white", font=("Helvetica", 16, "bold"))
+
 class Point:
     def __init__(self, x, y):
         self.x = x

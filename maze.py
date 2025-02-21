@@ -54,14 +54,14 @@ class Maze:
             for j in range(self._num_rows):
                 self._draw_cell(i, j, with_delay=False)  # Draw the grid instantly
 
-    def _draw_cell(self, i, j, with_delay=True):
+    def _draw_cell(self, i, j, with_delay=True, fill_color=None, text=None):
         if self._win is None:
             return
         x1 = self._x1 + i * self._cell_size_x
         y1 = self._y1 + j * self._cell_size_y
         x2 = x1 + self._cell_size_x
         y2 = y1 + self._cell_size_y
-        self._cells[i][j].draw(x1, y1, x2, y2)
+        self._cells[i][j].draw(x1, y1, x2, y2, fill_color, text)
         self._animate(with_delay=with_delay)  # Apply delay based on the parameter
 
     def _animate(self, with_delay=True):
@@ -72,10 +72,8 @@ class Maze:
             time.sleep(0.015)  # Apply delay only if with_delay is True
 
     def _break_entrance_and_exit(self):
-        self._cells[0][0].has_top_wall = False
-        self._draw_cell(0, 0)
-        self._cells[self._num_cols - 1][self._num_rows - 1].has_bottom_wall = False
-        self._draw_cell(self._num_cols - 1, self._num_rows - 1)
+        self._draw_cell(0, 0, fill_color="green", text="S")
+        self._draw_cell(self._num_cols - 1, self._num_rows - 1, fill_color="red", text="E")
 
     def _break_walls_r(self, i, j):
         self._cells[i][j].visited = True
@@ -186,6 +184,10 @@ class Maze:
             i, j = self.solution_path[k]
             ni, nj = self.solution_path[k + 1]
             self._cells[i][j].draw_move(self._cells[ni][nj])
+
+        # Redraw the start and end cells
+        self._draw_cell(0, 0, fill_color="green", text="S")
+        self._draw_cell(self._num_cols - 1, self._num_rows - 1, fill_color="red", text="E")
 
         self._win.redraw()  # Ensure the redraw happens immediately
 

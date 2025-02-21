@@ -13,7 +13,7 @@ class Cell:
         self._y2 = None
         self._win = win
 
-    def draw(self, x1, y1, x2, y2):
+    def draw(self, x1, y1, x2, y2, fill_color=None, text=None):
         if self._win is None:
             return
         self._x1 = x1
@@ -21,6 +21,8 @@ class Cell:
         self._y1 = y1
         self._y2 = y2
         line_color = "white"  # Default line color to white
+        if fill_color:
+            self._win.fill_rectangle(x1, y1, x2, y2, fill_color)
         if self.has_left_wall:
             line = Line(Point(x1, y1), Point(x1, y2))
             self._win.draw_line(line, line_color)
@@ -45,6 +47,8 @@ class Cell:
         else:
             line = Line(Point(x1, y2), Point(x2, y2))
             self._win.draw_line(line, "#1E1E1E")
+        if text:
+            self._win.draw_text(x1, y1, x2, y2, text)
 
     def draw_move(self, to_cell, undo=False):
         half_length = abs(self._x2 - self._x1) // 2
