@@ -168,10 +168,13 @@ class Maze:
         self._win.clear_canvas()
         self._cells = []
         self.solution_path = []
+        self._win.set_move_callback(None)
         self._create_cells()
         self._break_entrance_and_exit()
         self._break_walls_r(0, 0)
         self._reset_cells_visited()
+        self.user_position = (0, 0)
         self._win.disable_clear_button()
         self._win.redraw()
         self._win.enable_solve_button()
+        self._win.set_move_callback(self.move_user)

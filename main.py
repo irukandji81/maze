@@ -11,6 +11,7 @@ def main():
     cell_size_y = (screen_y - 2 * margin) / num_rows
     win = Window(screen_x, screen_y)
     win.disable_solve_button()
+    win.set_move_callback(None)
     maze = Maze(margin, margin, num_rows, num_cols, cell_size_x, cell_size_y, win)
     win.set_solve_callback(maze.solve)
     win.set_clear_callback(maze.clear_path)
@@ -19,4 +20,5 @@ def main():
     win.disable_clear_button()
     win.enable_solve_button()
     win.wait_for_close()
+
 main()
