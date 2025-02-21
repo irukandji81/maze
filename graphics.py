@@ -5,41 +5,29 @@ class Window:
         self.__root = Tk()
         self.__root.title("Maze Solver")
         self.__root.protocol("WM_DELETE_WINDOW", self.close)
-
-        # Create a frame to hold the buttons
         self.__button_frame = Frame(self.__root, bg="lightgray")
         self.__button_frame.pack(side=TOP, fill=X)
 
-        # Define a custom font
         custom_font = font.Font(family="Helvetica", size=12, weight="bold")
 
-        # Add a New Maze button
         self.__new_maze_button = Button(self.__button_frame, text="New Maze", command=self.new_maze, width=20, height=2, bg="blue", fg="white", font=custom_font, padx=10, pady=5, bd=3, relief="raised")
         self.__new_maze_button.pack(side=LEFT, fill=X, expand=1, padx=5, pady=5)
-
-        # Add a Solve button
         self.__solve_button = Button(self.__button_frame, text="Solve", command=self.solve, width=20, height=2, bg="green", fg="white", font=custom_font, padx=10, pady=5, bd=3, relief="raised")
         self.__solve_button.pack(side=LEFT, fill=X, expand=1, padx=5, pady=5)
-
-        # Add a Clear Path button
         self.__clear_button = Button(self.__button_frame, text="Clear Path", command=self.clear_path, state="disabled", width=20, height=2, bg="#4B0082", fg="white", font=custom_font, padx=10, pady=5, bd=3, relief="raised")
         self.__clear_button.pack(side=LEFT, fill=X, expand=1, padx=5, pady=5)
-
         self.__canvas = Canvas(self.__root, bg="#1E1E1E", height=height, width=width)  # Set canvas background to dark grey
         self.__canvas.pack(fill=BOTH, expand=1)
         self.__running = False
-
         self.__root.bind("<Up>", self.move_up)
         self.__root.bind("<Down>", self.move_down)
         self.__root.bind("<Left>", self.move_left)
         self.__root.bind("<Right>", self.move_right)
-
         self.__victory_label = None
         self.__victory_box = None
 
     def show_victory_message(self):
         if self.__victory_label is None:
-            # Create the victory text first to get its dimensions
             self.__victory_label = self.__canvas.create_text(
                 self.__canvas.winfo_width() // 2,
                 self.__canvas.winfo_height() // 2,
@@ -47,19 +35,17 @@ class Window:
                 fill="yellow",
                 font=("Helvetica", 24, "bold")
             )
-            bbox = self.__canvas.bbox(self.__victory_label)  # Get bounding box of the text
+            bbox = self.__canvas.bbox(self.__victory_label)
 
-            # Create a text box background based on the text dimensions
             self.__victory_box = self.__canvas.create_rectangle(
-                bbox[0] - 20,  # Add some padding
+                bbox[0] - 20,
                 bbox[1] - 10,
                 bbox[2] + 20,
                 bbox[3] + 10,
-                fill="#333333",  # Dark grey background
-                outline="white",  # White border
+                fill="#333333",
+                outline="white",
                 width=3
             )
-            # Raise the text above the box
             self.__canvas.tag_raise(self.__victory_label)
         self.redraw()
     
@@ -95,7 +81,7 @@ class Window:
             self.redraw()
         print("window closed...")
 
-    def draw_line(self, line, fill_color="white"):  # Default line color to white
+    def draw_line(self, line, fill_color="white"):
         line.draw(self.__canvas, fill_color)
 
     def close(self):
@@ -104,7 +90,7 @@ class Window:
     def solve(self):
         if self.solve_callback:
             self.solve_callback()
-            self.enable_clear_button()  # Enable the Clear Path button after solving
+            self.enable_clear_button()
 
     def clear_path(self):
         if self.clear_callback:
@@ -113,7 +99,7 @@ class Window:
     def new_maze(self):
         if self.new_maze_callback:
             self.new_maze_callback()
-            self.disable_clear_button()  # Disable the Clear Path button for the new maze
+            self.disable_clear_button()
 
     def set_solve_callback(self, callback):
         self.solve_callback = callback

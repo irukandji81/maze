@@ -14,13 +14,11 @@ class Maze:
         self._win = win
         if seed:
             random.seed(seed)
-
         self._create_cells()
         self._break_entrance_and_exit()
         self._break_walls_r(0, 0)
         self._reset_cells_visited()
-
-        self.user_position = (0, 0)  # Start position
+        self.user_position = (0, 0)
 
     def move_user(self, direction):
         i, j = self.user_position
@@ -52,7 +50,7 @@ class Maze:
             self._cells.append(col_cells)
         for i in range(self._num_cols):
             for j in range(self._num_rows):
-                self._draw_cell(i, j, with_delay=False)  # Draw the grid instantly
+                self._draw_cell(i, j, with_delay=False)
 
     def _draw_cell(self, i, j, with_delay=True, fill_color=None, text=None):
         if self._win is None:
@@ -62,14 +60,14 @@ class Maze:
         x2 = x1 + self._cell_size_x
         y2 = y1 + self._cell_size_y
         self._cells[i][j].draw(x1, y1, x2, y2, fill_color, text)
-        self._animate(with_delay=with_delay)  # Apply delay based on the parameter
+        self._animate(with_delay=with_delay)
 
     def _animate(self, with_delay=True):
         if self._win is None:
             return
         self._win.redraw()
         if with_delay:
-            time.sleep(0.015)  # Apply delay only if with_delay is True
+            time.sleep(0.015)
 
     def _break_entrance_and_exit(self):
         self._draw_cell(0, 0, fill_color="green", text="S")
@@ -79,50 +77,31 @@ class Maze:
         self._cells[i][j].visited = True
         while True:
             next_index_list = []
-
-            # determine which cell(s) to visit next
-            # left
             if i > 0 and not self._cells[i - 1][j].visited:
                 next_index_list.append((i - 1, j))
-            # right
             if i < self._num_cols - 1 and not self._cells[i + 1][j].visited:
                 next_index_list.append((i + 1, j))
-            # up
             if j > 0 and not self._cells[i][j - 1].visited:
                 next_index_list.append((i, j - 1))
-            # down
             if j < self._num_rows - 1 and not self._cells[i][j + 1].visited:
                 next_index_list.append((i, j + 1))
-
-            # if there is nowhere to go from here
-            # just break out
             if len(next_index_list) == 0:
                 self._draw_cell(i, j)
                 return
-
-            # randomly choose the next direction to go
             direction_index = random.randrange(len(next_index_list))
             next_index = next_index_list[direction_index]
-
-            # knock out walls between this cell and the next cell(s)
-            # right
             if next_index[0] == i + 1:
                 self._cells[i][j].has_right_wall = False
                 self._cells[i + 1][j].has_left_wall = False
-            # left
             elif next_index[0] == i - 1:
                 self._cells[i][j].has_left_wall = False
                 self._cells[i - 1][j].has_right_wall = False
-            # down
             elif next_index[1] == j + 1:
                 self._cells[i][j].has_bottom_wall = False
                 self._cells[i][j + 1].has_top_wall = False
-            # up
             elif next_index[1] == j - 1:
                 self._cells[i][j].has_top_wall = False
                 self._cells[i][j - 1].has_bottom_wall = False
-
-            # recursively visit the next cell
             self._break_walls_r(next_index[0], next_index[1])
 
     def _reset_cells_visited(self):
@@ -131,15 +110,13 @@ class Maze:
                 cell.visited = False
 
     def solve(self):
-        # Disable the Solve button during the solving process
         self._win.disable_solve_button()
         
-        self.solution_path = []  # Initialize the solution path
+        self.solution_path = []
         solved = self._solve_r(0, 0)
         if solved:
-            self._win.enable_clear_button()  # Enable the Clear Path button after solving
+            self._win.enable_clear_button()
         else:
-            # Enable the Solve button if the maze is not solved
             self._win.enable_solve_button()
         return solved
 
@@ -148,11 +125,9 @@ class Maze:
         self._cells[i][j].visited = True
         self.solution_path.append((i, j))
 
-        # If we are at the end cell, return True
         if i == self._num_cols - 1 and j == self._num_rows - 1:
             return True
 
-        # Try each direction
         directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
         for di, dj in directions:
             ni, nj = i + di, j + dj
@@ -171,43 +146,32 @@ class Maze:
         return False
         
     def clear_path(self):
-        # Clear the canvas
         self._win.clear_canvas()
 
-        # Redraw the maze without the grey lines
         for i in range(self._num_cols):
             for j in range(self._num_rows):
-                self._draw_cell(i, j, with_delay=False)  # Redraw instantly
+                self._draw_cell(i, j, with_delay=False)
 
-        # Redraw the successful path
         for k in range(len(self.solution_path) - 1):
             i, j = self.solution_path[k]
             ni, nj = self.solution_path[k + 1]
             self._cells[i][j].draw_move(self._cells[ni][nj])
 
-        # Redraw the start and end cells
         self._draw_cell(0, 0, fill_color="green", text="S")
         self._draw_cell(self._num_cols - 1, self._num_rows - 1, fill_color="red", text="E")
 
-        self._win.redraw()  # Ensure the redraw happens immediately
+        self._win.redraw()
 
-        # Disable the Clear Path button after clearing the path
         self._win.disable_clear_button()
         
     def new_maze(self):
-        # Clear the canvas
         self._win.clear_canvas()
-
-        # Reset the cells and solution path
         self._cells = []
         self.solution_path = []
-
-        # Create a new maze
         self._create_cells()
         self._break_entrance_and_exit()
         self._break_walls_r(0, 0)
         self._reset_cells_visited()
-        self._win.disable_clear_button()  # Disable the Clear Path button for the new maze
+        self._win.disable_clear_button()
         self._win.redraw()
-
         self._win.enable_solve_button()
